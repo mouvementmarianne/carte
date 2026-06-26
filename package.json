@@ -1,0 +1,10 @@
+{
+  "name": "mouvementmarianne-carte",
+  "packageManager": "yarn@4.16.0",
+  "scripts": {
+    "geo": "./src/wp-content/uploads/carto/geo.sh"
+  },
+  "devDependencies": {
+    "mapshaper": "^0.7.33"
+  }
+}
