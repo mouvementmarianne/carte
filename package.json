@@ -1,10 +1,18 @@
 {
-  "name": "mouvementmarianne-carte",
-  "packageManager": "yarn@4.16.0",
-  "scripts": {
-    "geo": "./src/wp-content/uploads/carto/geo.sh"
-  },
-  "devDependencies": {
-    "mapshaper": "^0.7.33"
-  }
+	"name": "mouvementmarianne-carte",
+	"version": "0.0.1",
+	"packageManager": "yarn@4.16.0",
+	"scripts": {
+		"geo": "./src/wp-content/uploads/carto/geo.sh",
+		"test:install": "playwright install",
+		"lint:check": "biome check --write .",
+		"format": "biome format --write .",
+		"test:e2e": "playwright test"
+	},
+	"devDependencies": {
+		"@axe-core/playwright": "^4.12.1",
+		"@biomejs/biome": "^2.5.1",
+		"@playwright/test": "^1.61.1",
+		"mapshaper": "^0.7.33"
+	}
 }

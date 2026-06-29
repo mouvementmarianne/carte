@@ -2,5 +2,6 @@
 .pnp.*
 .yarn/*
 .gitattributes
+node_modules/
 
 versions/
