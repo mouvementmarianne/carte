@@ -148,7 +148,7 @@ test.describe("carte interactive", () => {
 	 */
 	test("09 - une région affiche ses informations", async () => {
 		// Act
-		await page.locator("path.leaflet-interactive").first().click();
+		await page.getByLabel("Afficher les informations de Occitanie").click();
 
 		// Assert
 		await expect(
@@ -175,14 +175,35 @@ test.describe("carte interactive", () => {
 	 */
 	test("10 - les territoires non renseignés ne sont pas interactifs", async () => {
 		// Arrange
-		const disabledRegion: Locator = page
+		const disabledRegion = page
 			.locator('path.leaflet-interactive:not([role="button"])')
 			.first();
 
-		// Act
-		await disabledRegion.click({ force: true });
+		// Assert
+		await expect(disabledRegion).not.toHaveAttribute("role", "button");
+	});
+
+	/**
+	 * Départements
+	 */
+	test("11 - La fiche départementale est accessible après sélection d'une région", async () => {
+		// Arrange (le test 9 a fermé la pop-up mais pas la région)
+		const department = page.getByLabel("Afficher les informations de Gard");
+
+		await expect(department).toBeVisible();
+
+		// Act : ouverture de la fiche départementale
+		await department.focus();
+		await page.keyboard.press("Enter");
 
 		// Assert
-		await expect(page.locator(".leaflet-popup")).toHaveCount(0);
+		const dialog = page.getByRole("dialog");
+
+		await expect(dialog).toBeVisible();
+		await expect(dialog).toContainText("Gard");
+		await expect(dialog).toContainText("👤");
+		await expect(dialog).toContainText("📞");
+		await expect(dialog).toContainText("📅");
+		await expect(dialog).toContainText("👥");
 	});
 });
