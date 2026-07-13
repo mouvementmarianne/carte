@@ -1,6 +1,6 @@
 {
 	"name": "mouvementmarianne-carte",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"packageManager": "yarn@4.16.0",
 	"scripts": {
 		"geo": "./src/wp-content/uploads/carto/geo.sh",
@@ -11,8 +11,8 @@
 	},
 	"devDependencies": {
 		"@axe-core/playwright": "^4.12.1",
-		"@biomejs/biome": "^2.5.1",
+		"@biomejs/biome": "^2.5.3",
 		"@playwright/test": "^1.61.1",
-		"mapshaper": "^0.7.33"
+		"mapshaper": "^0.7.44"
 	}
 }
