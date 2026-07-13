@@ -3,24 +3,24 @@
 CONFIGURATION
 ==========================================
 */
-const GEO_PATH = "/wp-content/uploads/carto/geo";
+const GEO_PATH = '/wp-content/uploads/carto/geo';
 
 const STATUSES = {
 	actif: {
-		color: "#2ecc71",
-		icon: "🟢",
+		color: '#2ecc71',
+		icon: '🟢',
 	},
 	fragile: {
-		color: "#e67e22",
-		icon: "🟠",
+		color: '#e67e22',
+		icon: '🟠',
 	},
 	critique: {
-		color: "#e74c3c",
-		icon: "🔴",
+		color: '#e74c3c',
+		icon: '🔴',
 	},
 	non_implante: {
-		color: "#bdc3c7",
-		icon: "⚪",
+		color: '#bdc3c7',
+		icon: '⚪',
 	},
 };
 
@@ -59,23 +59,23 @@ const store = {
 };
 
 async function loadDepartments() {
-	const response = await fetch("/wp-json/wp/v2/departement?per_page=100");
+	const response = await fetch('/wp-json/wp/v2/departement?per_page=100');
 
-	if (!response.ok) throw new Error("Impossible de charger les départements");
+	if (!response.ok) throw new Error('Impossible de charger les départements');
 
 	store.departments = await response.json();
 
-	debug("Nombre de départements :", store.departments.length);
+	debug('Nombre de départements :', store.departments.length);
 }
 
 async function loadRegions() {
-	const response = await fetch("/wp-json/wp/v2/region?per_page=18");
+	const response = await fetch('/wp-json/wp/v2/region?per_page=18');
 
-	if (!response.ok) throw new Error("Impossible de charger les départements");
+	if (!response.ok) throw new Error('Impossible de charger les départements');
 
 	store.regions = await response.json();
 
-	debug("Nombre de régions :", store.regions.length);
+	debug('Nombre de régions :', store.regions.length);
 }
 
 /*
@@ -114,7 +114,7 @@ function asyncMap() {
 function waitForLeafletRender() {
 	return new Promise((resolve) => {
 		const check = () => {
-			if (document.querySelector("path.leaflet-interactive")) {
+			if (document.querySelector('path.leaflet-interactive')) {
 				resolve();
 				return;
 			}
@@ -155,8 +155,8 @@ function buildDepartmentsGeoJsonIndex() {
 	}
 }
 
-function normalizeName(name = "") {
-	return name.trim().toLocaleLowerCase("fr");
+function normalizeName(name = '') {
+	return name.trim().toLocaleLowerCase('fr');
 }
 
 function findCdr(regionCode, nom) {
@@ -204,13 +204,13 @@ function buildRegionsIndex(departments) {
 
 		const regionId = data.region_liee?.[0];
 		if (!regionId) {
-			debug("Département sans région :", department.title.rendered);
+			debug('Département sans région :', department.title.rendered);
 			continue;
 		}
 
 		const code = store.regionIdToCode[regionId];
 		if (!code) {
-			debug("Code INSEE introuvable : ", regionId);
+			debug('Code INSEE introuvable : ', regionId);
 			continue;
 		}
 
@@ -254,14 +254,14 @@ MAP
 */
 function getLayerStyle(feature, index) {
 	const entity = index[feature.properties.code];
-	const statut = entity?.statut ?? "non_implante";
+	const statut = entity?.statut ?? 'non_implante';
 
 	const selected =
 		feature.properties.code === store.selectedRegion ||
 		entity?.regionCode === store.selectedRegion;
 
 	return {
-		color: "#2c3e50",
+		color: '#2c3e50',
 		weight: selected ? SELECTED_BORDER : DEFAULT_BORDER,
 		fillColor: (STATUSES[statut] ?? STATUSES.non_implante).color,
 		fillOpacity: selected ? SELECTED_OPACITY : DEFAULT_OPACITY,
@@ -286,7 +286,7 @@ async function initGeoJsonLayer({
 		debug(
 			`GeoJSON ${nom} téléchargé et parsé en`,
 			performance.now() - t0,
-			"ms",
+			'ms',
 		);
 	}
 
@@ -295,7 +295,7 @@ async function initGeoJsonLayer({
 	debug(
 		`Taille ${nom} :`,
 		Math.round(JSON.stringify(geoJson).length / 1024),
-		"Ko",
+		'Ko',
 	);
 
 	const t1 = performance.now();
@@ -305,13 +305,13 @@ async function initGeoJsonLayer({
 		onEachFeature,
 	});
 
-	debug(`Création Leaflet ${nom} en`, performance.now() - t1, "ms");
+	debug(`Création Leaflet ${nom} en`, performance.now() - t1, 'ms');
 
 	const t2 = performance.now();
 
 	layer.addTo(map);
 
-	debug(`Ajout ${nom} à la carte en`, performance.now() - t2, "ms");
+	debug(`Ajout ${nom} à la carte en`, performance.now() - t2, 'ms');
 
 	layer.eachLayer((layer) => makeLayerAccessible(layer, index));
 
@@ -328,12 +328,12 @@ async function initDepartmentsLayer(regionCode) {
 	await loadDepartmentsGeoJson();
 
 	const geoJson = {
-		type: "FeatureCollection",
+		type: 'FeatureCollection',
 		features: store.departmentsGeoJsonByRegion[String(regionCode)] ?? [],
 	};
 
 	const layer = await initGeoJsonLayer({
-		nom: "départements",
+		nom: 'départements',
 		geoJson,
 		index: store.departmentsIndex,
 		onEachFeature: registerDepartmentEvents,
@@ -346,21 +346,21 @@ async function initDepartmentsLayer(regionCode) {
 }
 
 async function initMap() {
-	debug("Chargement GeoJSON...");
-	const loading = document.getElementById("map-loading");
-	loading?.removeAttribute("hidden");
+	debug('Chargement GeoJSON...');
+	const loading = document.getElementById('map-loading');
+	loading?.removeAttribute('hidden');
 
 	store.regionsLayer = await initGeoJsonLayer({
-		nom: "régions",
-		fichier: "regions.geojson",
+		nom: 'régions',
+		fichier: 'regions.geojson',
 		index: store.regionsIndex,
 		onEachFeature: registerRegionEvents,
 		map: store.map,
 	});
 
-	debug("Couche régions :", store.regionsLayer.getLayers().length);
+	debug('Couche régions :', store.regionsLayer.getLayers().length);
 
-	loading?.setAttribute("hidden", "");
+	loading?.setAttribute('hidden', '');
 }
 
 function registerRegionEvents(feature, layer) {
@@ -368,7 +368,7 @@ function registerRegionEvents(feature, layer) {
 
 	if (!region) return;
 
-	layer.on("click", async () => {
+	layer.on('click', async () => {
 		try {
 			store.selectedRegion = feature.properties.code;
 
@@ -386,13 +386,13 @@ function registerRegionEvents(feature, layer) {
 
 			layer.bindPopup(buildRegionPopup(feature)).openPopup();
 		} catch (error) {
-			console.error("Erreur lors du clic sur la région :", error);
+			console.error('Erreur lors du clic sur la région :', error);
 		}
 	});
 }
 
 function registerDepartmentEvents(feature, layer) {
-	layer.on("click", () => {
+	layer.on('click', () => {
 		layer.bindPopup(buildDepartmentPopup(feature)).openPopup();
 	});
 }
@@ -404,47 +404,47 @@ function makeLayerAccessible(layer, index) {
 	if (!el) return;
 
 	if (!entity) {
-		el.style.cursor = "not-allowed";
+		el.style.cursor = 'not-allowed';
 		return;
 	}
 
-	el.setAttribute("role", "button");
-	el.setAttribute("tabindex", "0");
+	el.setAttribute('role', 'button');
+	el.setAttribute('tabindex', '0');
 	el.setAttribute(
-		"aria-label",
+		'aria-label',
 		`Afficher les informations de ${layer.feature.properties.nom}`,
 	);
 
 	makePopupAccessible(layer);
 
-	el.addEventListener("keydown", (event) => {
-		if (event.key === "Enter" || event.key === " ") {
+	el.addEventListener('keydown', (event) => {
+		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault();
-			layer.fire("click");
+			layer.fire('click');
 		}
 	});
 }
 
 function makePopupAccessible(layer) {
-	layer.on("popupopen", (event) => {
+	layer.on('popupopen', (event) => {
 		const popup = event.popup.getElement();
 
 		if (!popup) {
 			return;
 		}
 
-		popup.setAttribute("role", "dialog");
-		popup.setAttribute("tabindex", "-1");
+		popup.setAttribute('role', 'dialog');
+		popup.setAttribute('tabindex', '-1');
 		popup.focus();
 
-		popup.addEventListener("keydown", (e) => {
-			if (e.key === "Escape") {
+		popup.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape') {
 				layer.closePopup();
 			}
 		});
 	});
 
-	layer.on("popupclose", () => {
+	layer.on('popupclose', () => {
 		layer.getElement()?.focus();
 	});
 }
@@ -463,22 +463,22 @@ function buildRegionPopup(feature) {
         `;
 	}
 
-	const departements = `${region.referents.length} département${region.referents.length > 1 ? "s" : ""}`;
-	const benevoles = `${region.benevoles} bénévole${region.benevoles > 1 ? "s" : ""}`;
+	const departements = `${region.referents.length} département${region.referents.length > 1 ? 's' : ''}`;
+	const benevoles = `${region.benevoles} bénévole${region.benevoles > 1 ? 's' : ''}`;
 	const referents = region.referents
-		.sort((a, b) => a.nom.localeCompare(b.nom, "fr", { sensitivity: "base" }))
-		.map(({ nom, referent }) => `• ${nom} : ${referent || "Non renseigné"}`)
-		.join("<br>");
-	const cdrs = region.cdrs.map(({ nom }) => nom).join(" et ");
+		.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }))
+		.map(({ nom, referent }) => `• ${nom} : ${referent || 'Non renseigné'}`)
+		.join('<br>');
+	const cdrs = region.cdrs.map(({ nom }) => nom).join(' et ');
 
 	const telephones = region.cdrs
 		.map(({ nom, telephone }) => `${telephone} (${nom})`)
-		.join(" / ");
+		.join(' / ');
 
 	return `
         <strong>${region.nom}</strong><br><br>
-        👤 Chargé·e de Développement Régional : ${cdrs || "Non renseigné"}<br><br>
-        📞 ${telephones || "Non renseigné"}<br><br>
+        👤 Chargé·e de Développement Régional : ${cdrs || 'Non renseigné'}<br><br>
+        📞 ${telephones || 'Non renseigné'}<br><br>
         📍 ${departements}<br><br>
 		📋 Référent·e·s départementaux :<br>
 			${referents}
@@ -490,14 +490,14 @@ function buildRegionPopup(feature) {
 function buildDepartmentPopup(feature) {
 	const department = store.departmentsIndex[feature.properties.code];
 
-	if (!department) return "Aucune donnée.";
+	if (!department) return 'Aucune donnée.';
 
 	return `
         <strong>${department.nom}</strong><br><br>
-        👤 ${department.referent ?? "Non renseigné"} <br><br>
-        📞 ${department.telephone ?? "Non renseigné"} <br><br>
-        ${STATUSES[department.statut]?.icon ?? "⚪"} ${department.statut ?? "Non renseigné"} <br><br>
-        📅 ${department.priseDeFonction ?? "Non renseignée"} <br><br>
+        👤 ${department.referent ?? 'Non renseigné'} <br><br>
+        📞 ${department.telephone ?? 'Non renseigné'} <br><br>
+        ${STATUSES[department.statut]?.icon ?? '⚪'} ${department.statut ?? 'Non renseigné'} <br><br>
+        📅 ${department.priseDeFonction ?? 'Non renseignée'} <br><br>
         👥 ${department.benevoles} bénévoles
     `;
 }
@@ -526,7 +526,7 @@ async function bootstrap() {
 	await waitForLeafletRender();
 
 	window.__ready = true;
-	debug("Carte initialisée");
+	debug('Carte initialisée');
 }
 
 bootstrap();

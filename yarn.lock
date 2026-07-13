@@ -16,18 +16,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@biomejs/biome@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "@biomejs/biome@npm:2.5.1"
+"@biomejs/biome@npm:^2.5.3":
+  version: 2.5.3
+  resolution: "@biomejs/biome@npm:2.5.3"
   dependencies:
-    "@biomejs/cli-darwin-arm64": "npm:2.5.1"
-    "@biomejs/cli-darwin-x64": "npm:2.5.1"
-    "@biomejs/cli-linux-arm64": "npm:2.5.1"
-    "@biomejs/cli-linux-arm64-musl": "npm:2.5.1"
-    "@biomejs/cli-linux-x64": "npm:2.5.1"
-    "@biomejs/cli-linux-x64-musl": "npm:2.5.1"
-    "@biomejs/cli-win32-arm64": "npm:2.5.1"
-    "@biomejs/cli-win32-x64": "npm:2.5.1"
+    "@biomejs/cli-darwin-arm64": "npm:2.5.3"
+    "@biomejs/cli-darwin-x64": "npm:2.5.3"
+    "@biomejs/cli-linux-arm64": "npm:2.5.3"
+    "@biomejs/cli-linux-arm64-musl": "npm:2.5.3"
+    "@biomejs/cli-linux-x64": "npm:2.5.3"
+    "@biomejs/cli-linux-x64-musl": "npm:2.5.3"
+    "@biomejs/cli-win32-arm64": "npm:2.5.3"
+    "@biomejs/cli-win32-x64": "npm:2.5.3"
   dependenciesMeta:
     "@biomejs/cli-darwin-arm64":
       optional: true
@@ -47,62 +47,62 @@ __metadata:
       optional: true
   bin:
     biome: bin/biome
-  checksum: 10c0/3b2ec858e28d2a7e203609151fe670427150b4c8abda2292e22357facc5955a246e7338e9d6df3d9a76da6a2cf2069483f4b3abadf17680aec5c740653fe09a5
+  checksum: 10c0/217e6d54e610dc64a5029cc3748a7faec226cce4399cc76bea4c751c171dcb2254996fc1ad6e345f220e7dd0271f419b7a3e8ecc9d826c566b653d7389350afc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-arm64@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@biomejs/cli-darwin-arm64@npm:2.5.1"
+"@biomejs/cli-darwin-arm64@npm:2.5.3":
+  version: 2.5.3
+  resolution: "@biomejs/cli-darwin-arm64@npm:2.5.3"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-darwin-x64@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@biomejs/cli-darwin-x64@npm:2.5.1"
+"@biomejs/cli-darwin-x64@npm:2.5.3":
+  version: 2.5.3
+  resolution: "@biomejs/cli-darwin-x64@npm:2.5.3"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64-musl@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@biomejs/cli-linux-arm64-musl@npm:2.5.1"
+"@biomejs/cli-linux-arm64-musl@npm:2.5.3":
+  version: 2.5.3
+  resolution: "@biomejs/cli-linux-arm64-musl@npm:2.5.3"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-arm64@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@biomejs/cli-linux-arm64@npm:2.5.1"
+"@biomejs/cli-linux-arm64@npm:2.5.3":
+  version: 2.5.3
+  resolution: "@biomejs/cli-linux-arm64@npm:2.5.3"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64-musl@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@biomejs/cli-linux-x64-musl@npm:2.5.1"
+"@biomejs/cli-linux-x64-musl@npm:2.5.3":
+  version: 2.5.3
+  resolution: "@biomejs/cli-linux-x64-musl@npm:2.5.3"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@biomejs/cli-linux-x64@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@biomejs/cli-linux-x64@npm:2.5.1"
+"@biomejs/cli-linux-x64@npm:2.5.3":
+  version: 2.5.3
+  resolution: "@biomejs/cli-linux-x64@npm:2.5.3"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-arm64@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@biomejs/cli-win32-arm64@npm:2.5.1"
+"@biomejs/cli-win32-arm64@npm:2.5.3":
+  version: 2.5.3
+  resolution: "@biomejs/cli-win32-arm64@npm:2.5.3"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@biomejs/cli-win32-x64@npm:2.5.1":
-  version: 2.5.1
-  resolution: "@biomejs/cli-win32-x64@npm:2.5.1"
+"@biomejs/cli-win32-x64@npm:2.5.3":
+  version: 2.5.3
+  resolution: "@biomejs/cli-win32-x64@npm:2.5.3"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -1633,9 +1633,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mapshaper@npm:^0.7.33":
-  version: 0.7.33
-  resolution: "mapshaper@npm:0.7.33"
+"mapshaper@npm:^0.7.44":
+  version: 0.7.44
+  resolution: "mapshaper@npm:0.7.44"
   dependencies:
     "@bokuweb/zstd-wasm": "npm:^0.0.27"
     "@ngageoint/geopackage": "npm:^4.2.6"
@@ -1664,7 +1664,7 @@ __metadata:
     idb-keyval: "npm:^6.2.0"
     jpeg-js: "npm:^0.4.4"
     kdbush: "npm:^3.0.0"
-    mproj: "npm:0.1.3"
+    mproj: "npm:0.1.5"
     msgpackr: "npm:^1.11.12"
     open: "npm:^11.0.0"
     pngjs: "npm:^7.0.0"
@@ -1679,7 +1679,7 @@ __metadata:
     mapshaper: bin/mapshaper
     mapshaper-gui: bin/mapshaper-gui
     mapshaper-xl: bin/mapshaper-xl
-  checksum: 10c0/762ecbea8be7cdd6bb3b74364c4c248761307d21c1a3b821037785554030985788229780969778864062466add1bd828ec8bfd094c16dde76f00fccacbc055c0
+  checksum: 10c0/e62ec289b876df39be6aed90371af1a9863d6fae8a1171504c703960616ab89231cb5a23d003cb0ff21b5a27dc659b289269a6ff9e87cea1a5d7ae70d5236b12
   languageName: node
   linkType: hard
 
@@ -1732,22 +1732,22 @@ __metadata:
   resolution: "mouvementmarianne-carte@workspace:."
   dependencies:
     "@axe-core/playwright": "npm:^4.12.1"
-    "@biomejs/biome": "npm:^2.5.1"
+    "@biomejs/biome": "npm:^2.5.3"
     "@playwright/test": "npm:^1.61.1"
-    mapshaper: "npm:^0.7.33"
+    mapshaper: "npm:^0.7.44"
   languageName: unknown
   linkType: soft
 
-"mproj@npm:0.1.3":
-  version: 0.1.3
-  resolution: "mproj@npm:0.1.3"
+"mproj@npm:0.1.5":
+  version: 0.1.5
+  resolution: "mproj@npm:0.1.5"
   dependencies:
     geographiclib: "npm:1.48.0"
     rw: "npm:~1.3.2"
   bin:
     mcs2cs: bin/mcs2cs
     mproj: bin/mproj
-  checksum: 10c0/b3209f0d19f70c907ba51d91e1dc94785c768ca0bf5b43f218c51fde9a4471e6e9888acef1877209c40a742a9800fbe60dcbdb703a89a99d72473e8c5f52f977
+  checksum: 10c0/e044893e8ba5682305789664f8198c105c7f50057e3b4f1950d3ca1b8d7fa17e78bc55f0c419afd549f14ab8b0c3015c161df7877cb1dc3bcfc60a966c4db422
   languageName: node
   linkType: hard
 
