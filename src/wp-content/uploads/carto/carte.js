@@ -378,6 +378,7 @@ function registerRegionEvents(feature, layer) {
 
 			if (store.departmentsLayer) {
 				store.departmentsLayer.remove();
+				store.departmentsLayer = null;
 			}
 
 			store.departmentsLayer = await initDepartmentsLayer(
@@ -480,7 +481,7 @@ function buildRegionPopup(feature) {
         👤 Chargé·e de Développement Régional : ${cdrs || 'Non renseigné'}<br><br>
         📞 ${telephones || 'Non renseigné'}<br><br>
         📍 ${departements}<br><br>
-		📋 Référent·e·s départementaux :<br>
+		📋 Référent·e·s des départements :<br>
 			${referents}
         <br><br>
 		👥 ${benevoles}<br><br>
@@ -494,10 +495,10 @@ function buildDepartmentPopup(feature) {
 
 	return `
         <strong>${department.nom}</strong><br><br>
-        👤 ${department.referent ?? 'Non renseigné'} <br><br>
+        👤 Référent·e départemental·e : ${department.referent ?? 'Non renseigné'} <br><br>
         📞 ${department.telephone ?? 'Non renseigné'} <br><br>
         ${STATUSES[department.statut]?.icon ?? '⚪'} ${department.statut ?? 'Non renseigné'} <br><br>
-        📅 ${department.priseDeFonction ?? 'Non renseignée'} <br><br>
+        📅 Date de prise de fonction : ${department.priseDeFonction ?? 'Non renseignée'} <br><br>
         👥 ${department.benevoles} bénévoles
     `;
 }

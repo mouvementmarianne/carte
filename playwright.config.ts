@@ -1,10 +1,10 @@
-import { defineConfig } from "@playwright/test";
+import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
 	use: {
-		baseURL: "https://www.mouvementmarianne.org/carte-interactive/",
+		baseURL: 'https://www.mouvementmarianne.org/carte-interactive/',
 		headless: false,
 	},
-	tsconfig: "./tests/tsconfig.json",
+	tsconfig: './tests/tsconfig.json',
 	workers: 1,
 });

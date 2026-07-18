@@ -116,16 +116,20 @@ test.describe('carte interactive', () => {
 
 	test('06 - la fiche régionale est accessible au clavier avec Entrée', async () => {
 		// Arrange
-		const region: Locator = page.locator('path.leaflet-interactive').first();
+		const region = page.getByLabel('Afficher les informations de Occitanie');
 		await region.focus();
+		await expect(region).toBeFocused();
 
 		// Act
-		await page.keyboard.press('Enter');
+		await region.press('Enter');
 
 		// Assert
 		const dialog: Locator = page.getByRole('dialog');
 		await expect(dialog).toBeVisible();
 		await expect(dialog).toContainText('Chargé·e de Développement Régional');
+		await expect(
+			page.locator('[aria-label="Afficher les informations de Gard"]'),
+		).toHaveCount(1);
 	});
 
 	test('07 - le focus est correctement géré par la popup', async () => {
@@ -148,7 +152,9 @@ test.describe('carte interactive', () => {
 	 */
 	test('09 - une région affiche ses informations', async () => {
 		// Act
-		await page.getByLabel('Afficher les informations de Occitanie').click();
+		const region = page.getByLabel('Afficher les informations de Occitanie');
+		await region.focus();
+		await region.press('Enter');
 
 		// Assert
 		await expect(
@@ -167,6 +173,9 @@ test.describe('carte interactive', () => {
 		await expect(page.getByText('département')).toBeVisible();
 
 		await page.keyboard.press('Escape');
+		await expect(
+			page.locator('[aria-label="Afficher les informations de Occitanie"]'),
+		).toHaveCount(1);
 		await expect(page.locator('.leaflet-popup')).toHaveCount(0);
 	});
 
@@ -187,21 +196,30 @@ test.describe('carte interactive', () => {
 	 * Départements
 	 */
 	test("11 - la fiche départementale est accessible après sélection d'une région", async () => {
-		// Arrange (le test 9 a fermé la pop-up mais pas la région)
+		// Arrange
+		await page.reload();
+		await expect(page).toHaveTitle(/Mouvement Marianne/);
+		const region = page.getByLabel('Afficher les informations de Occitanie');
+		await region.focus();
+		await region.press('Enter');
 		const department = page.getByLabel('Afficher les informations de Gard');
+		await expect(department).toBeAttached({
+			timeout: 10000,
+		});
 
-		await expect(department).toBeVisible();
 
 		// Act : ouverture de la fiche départementale
 		await department.focus();
 		await page.keyboard.press('Enter');
 
 		// Assert
-		const dialog = page.getByRole('dialog');
+		const dialog = page
+			.getByRole('dialog')
+			.filter({ hasText: 'Référent·e départemental·e' });
 
 		await expect(dialog).toBeVisible();
 		await expect(dialog).toContainText('Gard');
-		await expect(dialog).toContainText('👤');
+		await expect(dialog).toContainText('👤 Référent·e départemental·e :');
 		await expect(dialog).toContainText('📞');
 		await expect(dialog).toContainText('📅');
 		await expect(dialog).toContainText('👥');
