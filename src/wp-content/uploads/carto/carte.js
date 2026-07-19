@@ -368,8 +368,12 @@ function registerRegionEvents(feature, layer) {
 
 	if (!region) return;
 
+	layer.bindPopup(buildRegionPopup(feature));
+
 	layer.on('click', async () => {
 		try {
+			store.map.closePopup();
+
 			store.selectedRegion = feature.properties.code;
 
 			store.regionsLayer.setStyle((feature) =>
@@ -385,7 +389,7 @@ function registerRegionEvents(feature, layer) {
 				feature.properties.code,
 			);
 
-			layer.bindPopup(buildRegionPopup(feature)).openPopup();
+			layer.openPopup();
 		} catch (error) {
 			console.error('Erreur lors du clic sur la région :', error);
 		}
@@ -393,8 +397,12 @@ function registerRegionEvents(feature, layer) {
 }
 
 function registerDepartmentEvents(feature, layer) {
+	layer.bindPopup(buildDepartmentPopup(feature));
+
 	layer.on('click', () => {
-		layer.bindPopup(buildDepartmentPopup(feature)).openPopup();
+		store.map.closePopup();
+
+		layer.openPopup();
 	});
 }
 

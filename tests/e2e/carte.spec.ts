@@ -207,16 +207,13 @@ test.describe('carte interactive', () => {
 			timeout: 10000,
 		});
 
-
 		// Act : ouverture de la fiche départementale
 		await department.focus();
 		await page.keyboard.press('Enter');
 
 		// Assert
-		const dialog = page
-			.getByRole('dialog')
-			.filter({ hasText: 'Référent·e départemental·e' });
-
+		await expect(page.getByRole('dialog')).toHaveCount(1);
+		const dialog = page.getByRole('dialog');
 		await expect(dialog).toBeVisible();
 		await expect(dialog).toContainText('Gard');
 		await expect(dialog).toContainText('👤 Référent·e départemental·e :');
