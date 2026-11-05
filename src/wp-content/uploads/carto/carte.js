@@ -167,6 +167,18 @@ function findCdr(regionCode, nom) {
 	);
 }
 
+function formatDate(dateString) {
+	if (!dateString) return null;
+	// Format attendu : YYYYMMDD
+	if (typeof dateString === 'string' && dateString.length === 8) {
+		const day = dateString.substring(6, 8);
+		const month = dateString.substring(4, 6);
+		const year = dateString.substring(0, 4);
+		return `${day}/${month}/${year}`;
+	}
+	return dateString;
+}
+
 /*
 ==========================================
 BUSINESS
@@ -240,7 +252,7 @@ function buildDepartmentsIndex(departments) {
 			referent: data.referent_departemental || null,
 			telephone: cdr?.telephone || null,
 			statut: data.statut,
-			priseDeFonction: data.date_de_prise_de_fonction,
+			priseDeFonction: formatDate(data.date_de_prise_de_fonction),
 			benevoles: Number(data.nombre_de_benevoles ?? 0),
 			regionCode,
 		};
