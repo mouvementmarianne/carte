@@ -10,6 +10,10 @@ const STATUSES = {
 		color: '#2ecc71',
 		icon: '🟢',
 	},
+	vigilance: {
+		color: '#e3e622',
+		icon: '🟡',
+	},
 	fragile: {
 		color: '#e67e22',
 		icon: '🟠',
