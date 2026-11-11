@@ -10,6 +10,10 @@ const STATUSES = {
 		color: '#2ecc71',
 		icon: '🟢',
 	},
+	vigilance: {
+		color: '#e3e622',
+		icon: '🟡',
+	},
 	fragile: {
 		color: '#e67e22',
 		icon: '🟠',
@@ -167,6 +171,75 @@ function findCdr(regionCode, nom) {
 	);
 }
 
+function formatDate(dateString) {
+	if (!dateString) return null;
+	// Format attendu : YYYYMMDD
+	if (typeof dateString === 'string' && dateString.length === 8) {
+		const day = dateString.substring(6, 8);
+		const month = dateString.substring(4, 6);
+		const year = dateString.substring(0, 4);
+		return `${day}/${month}/${year}`;
+	}
+	return dateString;
+}
+
+function createPopupContent(data, type) {
+  const popup = document.createElement('article');
+  popup.className = 'popup-info';
+
+  let html = '';
+
+  if (type === 'region') {
+	const departements = `${data.referents.length} département${data.referents.length > 1 ? 's' : ''}`;
+	const benevoles = `${data.benevoles} bénévole${data.benevoles > 1 ? 's' : ''}`;
+	
+	const referents = data.referents
+		.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }))
+		.map(({ nom, referent }) => `<span>• ${nom} : ${referent || 'Non renseigné'}</span>`)
+		.join('\n');
+	const cdrs = data.cdrs.map(({ nom }) => nom).join(' et ');
+
+	const telephones = data.cdrs
+		.map(({ nom, telephone }) => `${telephone} (${nom})`)
+		.join(' / ');
+
+	const courriels = data.cdrs
+		.map(({ nom, courriel }) => `${courriel} (${nom})`)
+		.join(' / ');
+
+    html = `
+      <h2>${data.nom}</h2>
+      <p><strong>👤 Chargé·e de Développement Régional :</strong> ${cdrs || 'Non renseigné'}</p>
+      <p><strong>📞 :</strong> ${telephones || 'Non renseigné'}</p>
+      <p class="email"><strong>📧 :</strong> ${courriels || 'Non renseigné'}</p>
+      <p><strong>📍 :</strong> ${departements}</p>
+      <p><strong>📋 Référent·e·s des départements :</strong></p>
+      <p>${referents}</p>
+      <p><strong>👥 :</strong> ${benevoles} bénévoles</p>
+    `;
+  } else if (type === 'department') {
+    html = `
+      <h2>${data.nom}</h2>
+      <p><strong>👤 Référent·e départemental :</strong> ${data.referent || 'Non renseigné'}</p>
+      <p><strong>📞 :</strong> ${data.telephone || 'Non renseigné'}</p>
+      <p class="email"><strong>📧 :</strong> ${data.courriel || 'Non renseigné'}</p>
+      <p>${STATUSES[data.statut]?.icon || '⚪'} <strong>Statut :</strong> ${data.statut || 'Non renseigné'}</p>
+      <p><strong>📅 Prise de fonction :</strong> ${data.priseDeFonction || 'Non renseignée'}</p>
+      <p><strong>👥 :</strong> ${data.benevoles} bénévoles</p>
+    `;
+  } else if (type === 'location') {
+    html = `
+      <h2>${data.nom}</h2>
+      <p><strong>📍 Adresse :</strong> ${data.adresse || 'Non renseignée'}</p>
+      <p><strong>📅 Date de visite :</strong> ${data.dateVisite || 'Non renseignée'}</p>
+      <p><strong>📝 Notes :</strong> ${data.notes || 'Aucune note'}</p>
+    `;
+  }
+
+  popup.innerHTML = html;
+  return popup;
+}
+
 /*
 ==========================================
 BUSINESS
@@ -188,10 +261,12 @@ function buildRegionsIndex(departments) {
 				{
 					nom: region.acf.charge_de_developpement_regional_1,
 					telephone: region.acf.telephone_1,
+					courriel: region.acf.courriel_cdr_1
 				},
 				{
 					nom: region.acf.charge_de_developpement_regional_2,
 					telephone: region.acf.telephone_2,
+					courriel: region.acf.courriel_cdr_2
 				},
 			].filter((cdr) => cdr.nom),
 		};
@@ -239,8 +314,9 @@ function buildDepartmentsIndex(departments) {
 			nom: department.title.rendered,
 			referent: data.referent_departemental || null,
 			telephone: cdr?.telephone || null,
+			courriel: cdr?.courriel || null,
 			statut: data.statut,
-			priseDeFonction: data.date_de_prise_de_fonction,
+			priseDeFonction: formatDate(data.date_de_prise_de_fonction),
 			benevoles: Number(data.nombre_de_benevoles ?? 0),
 			regionCode,
 		};
@@ -465,50 +541,34 @@ MARKUP
 */
 function buildRegionPopup(feature) {
 	const region = store.regionsIndex[feature.properties.code];
+
 	if (!region) {
-		return `
-            <strong>${feature.properties.nom}</strong><br><br>
-            Aucune donnée n'est encore renseignée pour cette région.
-        `;
+		const popup = document.createElement('article');
+		popup.className = 'popup-info';
+		popup.innerHTML = `
+			<h2>${feature.properties.nom}</h2>
+			<p>Aucune donnée n'est encore renseignée pour cette région.</p>
+		`;
+		return popup;
 	}
 
-	const departements = `${region.referents.length} département${region.referents.length > 1 ? 's' : ''}`;
-	const benevoles = `${region.benevoles} bénévole${region.benevoles > 1 ? 's' : ''}`;
-	const referents = region.referents
-		.sort((a, b) => a.nom.localeCompare(b.nom, 'fr', { sensitivity: 'base' }))
-		.map(({ nom, referent }) => `• ${nom} : ${referent || 'Non renseigné'}`)
-		.join('<br>');
-	const cdrs = region.cdrs.map(({ nom }) => nom).join(' et ');
-
-	const telephones = region.cdrs
-		.map(({ nom, telephone }) => `${telephone} (${nom})`)
-		.join(' / ');
-
-	return `
-        <strong>${region.nom}</strong><br><br>
-        👤 Chargé·e de Développement Régional : ${cdrs || 'Non renseigné'}<br><br>
-        📞 ${telephones || 'Non renseigné'}<br><br>
-        📍 ${departements}<br><br>
-		📋 Référent·e·s des départements :<br>
-			${referents}
-        <br><br>
-		👥 ${benevoles}<br><br>
-    `;
+	return createPopupContent(region, 'region');
 }
 
 function buildDepartmentPopup(feature) {
 	const department = store.departmentsIndex[feature.properties.code];
 
-	if (!department) return 'Aucune donnée.';
+	if (!department) {
+		const popup = document.createElement('article');
+		popup.className = 'popup-info';
+		popup.innerHTML = `
+			<h2>${feature.properties.nom}</h2>
+			<p>Aucune donnée n'est encore renseignée pour ce département.</p>
+		`;
+		return popup;
+	}
 
-	return `
-        <strong>${department.nom}</strong><br><br>
-        👤 Référent·e départemental·e : ${department.referent ?? 'Non renseigné'} <br><br>
-        📞 ${department.telephone ?? 'Non renseigné'} <br><br>
-        ${STATUSES[department.statut]?.icon ?? '⚪'} ${department.statut ?? 'Non renseigné'} <br><br>
-        📅 Date de prise de fonction : ${department.priseDeFonction ?? 'Non renseignée'} <br><br>
-        👥 ${department.benevoles} bénévoles
-    `;
+	return createPopupContent(department, 'department');
 }
 /*
 ==========================================

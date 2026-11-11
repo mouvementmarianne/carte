@@ -219,6 +219,11 @@ test.describe('carte interactive', () => {
 		await expect(dialog).toContainText('👤 Référent·e départemental·e :');
 		await expect(dialog).toContainText('📞');
 		await expect(dialog).toContainText('📅');
+		// La date de prise de fonction dans WordPress est au format YYYYMMDD
+		// Vérifie que le format YYYYMMDD n'est pas affiché directement
+		await expect(dialog).not.toContainText('20261104');
+		// Vérifie que le format DD/MM/YYYY est présent
+		await expect(dialog).toContainText(/\d{2}\/\d{2}\/\d{4}/);
 		await expect(dialog).toContainText('👥');
 	});
 });
